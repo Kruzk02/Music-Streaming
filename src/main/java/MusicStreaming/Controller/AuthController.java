@@ -2,6 +2,7 @@ package MusicStreaming.Controller;
 
 import MusicStreaming.DTO.LoginDTO;
 import MusicStreaming.DTO.SignupDTO;
+import MusicStreaming.Jwt.JwtService;
 import MusicStreaming.Model.User;
 import MusicStreaming.Service.UserServiceImpl;
 import org.slf4j.Logger;
@@ -16,17 +17,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api")
 public class AuthController {
 
     private final UserServiceImpl userService;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
     private final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    public AuthController(UserServiceImpl userService, AuthenticationManager authenticationManager) {
+    public AuthController(UserServiceImpl userService, AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/signup")
@@ -50,8 +56,12 @@ public class AuthController {
                     loginDTO.getUsername(),loginDTO.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
+            String token = jwtService.generateToken(loginDTO.getUsername());
+            Map<String,String> response = new HashMap<>();
+            response.put("token",token);
+
             logger.info("User '{}' logged in successfully.", loginDTO.getUsername());
-            return ResponseEntity.ok("Logged in successfully");
+            return ResponseEntity.ok(response);
         }catch (Exception e){
             logger.warn("Login failed for username: {}", loginDTO.getUsername());
 
