@@ -9,17 +9,15 @@ import java.util.Collection;
 @Table(name = "users")
 public class User {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private String username;
 
-    @NotNull
     private String email;
 
-    @NotNull
     private String password;
 
     @ManyToMany
@@ -32,15 +30,18 @@ public class User {
     )
     private Collection<Role> roles;
 
+    public boolean enabled;
+
     public User() {
     }
 
-    public User(Long id, String username, String email, String password, Collection<Role> roles) {
+    public User(Long id, String username, String email, String password, Collection<Role> roles,boolean enabled) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -81,5 +82,13 @@ public class User {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
