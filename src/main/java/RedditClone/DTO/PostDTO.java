@@ -14,6 +14,17 @@ public class PostDTO {
     private User user;
     private Date createAt;
 
+    public PostDTO() {
+    }
+
+    public PostDTO(String title, String content, Collection<Comment> comments, User user, Date createAt) {
+        this.title = title;
+        this.content = content;
+        this.comments = comments;
+        this.user = user;
+        this.createAt = createAt;
+    }
+
     public String getTitle() {
         return title;
     }

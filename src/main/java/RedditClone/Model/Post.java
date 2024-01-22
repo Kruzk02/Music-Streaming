@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
+@Table(name = "posts")
 public class Post {
 
     @Id
@@ -15,11 +16,11 @@ public class Post {
     private String title;
     private String content;
 
-    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "posts")
     private Collection<Comment> comments;
 
     @ManyToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
     @CreationTimestamp

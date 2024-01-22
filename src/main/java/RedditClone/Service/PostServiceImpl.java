@@ -2,16 +2,18 @@ package RedditClone.Service;
 
 import RedditClone.DTO.PostDTO;
 import RedditClone.Model.Post;
-import RedditClone.Repository.CommentRepository;
 import RedditClone.Repository.PostRepository;
-import RedditClone.Repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PostServiceImpl implements PostService{
 
     private final PostRepository postRepository;
 
+    @Autowired
     public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
@@ -41,17 +43,22 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public void delete(Long id) {
-        postRepository.deleteById(id);
+    public Post delete(Long id) {
+        Post post = postRepository.findById(id).orElse(null);
+
+        if(post != null){
+            postRepository.delete(post);
+        }
+        return null;
     }
 
     @Override
-    public void findPostById(Long id) {
-        postRepository.findById(id);
+    public Post findPostById(Long id) {
+        return postRepository.findById(id).orElse(null);
     }
 
     @Override
-    public void getAllPost() {
-        postRepository.findAll();
+    public List<Post> getAllPost() {
+        return postRepository.findAll();
     }
 }

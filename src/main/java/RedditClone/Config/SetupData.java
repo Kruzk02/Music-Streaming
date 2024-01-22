@@ -2,6 +2,7 @@ package RedditClone.Config;
 
 import RedditClone.Model.Privilege;
 import RedditClone.Model.Role;
+import RedditClone.Model.User;
 import RedditClone.Repository.PrivilegeRepository;
 import RedditClone.Repository.RoleRepository;
 import RedditClone.Repository.UserRepository;
@@ -41,6 +42,7 @@ public class SetupData implements ApplicationListener<ContextRefreshedEvent> {
 //        user.setEmail("phucnguyen@gmail.com");
 //        user.setPassword(passwordEncoder.encode("123123"));
 //        user.setRoles(Arrays.asList(adminRole));
+//        user.setEnabled(true);
 //        userRepository.save(user);
 
         alreadySetup = true;

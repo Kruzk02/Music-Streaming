@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 
 @Entity
+@Table(name = "comments")
 public class Comment {
 
     @Id
@@ -14,11 +15,11 @@ public class Comment {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "post_id",referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "post_id",referencedColumnName = "id")
     private Post posts;
 
     @ManyToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
     @Temporal(TemporalType.TIMESTAMP)

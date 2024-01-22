@@ -12,6 +12,16 @@ public class CommentDTO {
     private User user;
     private Date createAt;
 
+    public CommentDTO() {
+    }
+
+    public CommentDTO(String content, Post posts, User user, Date createAt) {
+        this.content = content;
+        this.posts = posts;
+        this.user = user;
+        this.createAt = createAt;
+    }
+
     public String getContent() {
         return content;
     }
