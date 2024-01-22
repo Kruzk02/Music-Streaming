@@ -12,17 +12,15 @@ public class PostDTO {
     private String content;
     private Collection<Comment> comments;
     private User user;
-    private Date createAt;
 
     public PostDTO() {
     }
 
-    public PostDTO(String title, String content, Collection<Comment> comments, User user, Date createAt) {
+    public PostDTO(String title, String content, Collection<Comment> comments, User user) {
         this.title = title;
         this.content = content;
         this.comments = comments;
         this.user = user;
-        this.createAt = createAt;
     }
 
     public String getTitle() {
@@ -55,13 +53,5 @@ public class PostDTO {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
     }
 }

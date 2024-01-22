@@ -1,8 +1,11 @@
 package RedditClone.Controller;
 
 import RedditClone.DTO.PostDTO;
+import RedditClone.Jwt.JwtService;
 import RedditClone.Model.Post;
+import RedditClone.Model.User;
 import RedditClone.Service.PostServiceImpl;
+import RedditClone.Service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +18,13 @@ import java.util.List;
 public class PostController {
 
     private final PostServiceImpl postService;
-
+    private final JwtService jwtService;
+    private final UserServiceImpl userService;
     @Autowired
-    public PostController(PostServiceImpl postService) {
+    public PostController(PostServiceImpl postService, JwtService jwtService, UserServiceImpl userService) {
         this.postService = postService;
+        this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -38,9 +44,18 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Post> createPosts(@RequestBody PostDTO postDTO){
-        Post post = postService.create(postDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(post);
+    public ResponseEntity<?> createPosts(@RequestBody PostDTO postDTO,@RequestHeader("Authorization") String authHeader){
+        String token = extractToken(authHeader);
+
+        if(token != null){
+            String username = jwtService.extractUsername(token);
+            User user = userService.findUserByUsername(username);
+
+            postDTO.setUser(user);
+            postService.create(postDTO);
+            return new  ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PutMapping("/update/{id}")
@@ -61,5 +76,12 @@ public class PostController {
         }catch (Exception e){
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private String extractToken(String authHeader){
+        if(authHeader != null && authHeader.startsWith("Bearer ")){
+            return authHeader.substring(7);
+        }
+        return null;
     }
 }

@@ -6,6 +6,7 @@ import RedditClone.Repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public class PostServiceImpl implements PostService{
         post.setContent(postDTO.getContent());
         post.setComments(postDTO.getComments());
         post.setUser(postDTO.getUser());
-        post.setCreateAt(postDTO.getCreateAt());
+        post.setCreateAt(new Date(System.currentTimeMillis()));
 
         return postRepository.save(post);
     }
