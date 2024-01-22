@@ -10,16 +10,14 @@ public class CommentDTO {
     private String content;
     private Post posts;
     private User user;
-    private Date createAt;
 
     public CommentDTO() {
     }
 
-    public CommentDTO(String content, Post posts, User user, Date createAt) {
+    public CommentDTO(String content, Post posts, User user) {
         this.content = content;
         this.posts = posts;
         this.user = user;
-        this.createAt = createAt;
     }
 
     public String getContent() {
@@ -44,13 +42,5 @@ public class CommentDTO {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
     }
 }

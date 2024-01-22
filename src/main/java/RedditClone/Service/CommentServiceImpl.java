@@ -6,6 +6,8 @@ import RedditClone.Repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class CommentServiceImpl implements CommentService{
 
@@ -22,13 +24,17 @@ public class CommentServiceImpl implements CommentService{
         comment.setContent(commentDTO.getContent());
         comment.setPosts(commentDTO.getPosts());
         comment.setUser(commentDTO.getUser());
-        comment.setCreateAt(commentDTO.getCreateAt());
+        comment.setCreateAt(new Date(System.currentTimeMillis()));
 
         return commentRepository.save(comment);
     }
 
     @Override
-    public void delete(Long id) {
-        commentRepository.deleteById(id);
+    public Comment delete(Long id) {
+        Comment comment = commentRepository.findById(id).orElse(null);
+        if(comment != null){
+            commentRepository.delete(comment);
+        }
+        return null;
     }
 }
