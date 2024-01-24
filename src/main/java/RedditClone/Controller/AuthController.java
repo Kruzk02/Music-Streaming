@@ -69,11 +69,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
         try{
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    loginDTO.getUsername(),loginDTO.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            String token = jwtService.generateToken(loginDTO.getUsername());
+            String token = userService.login(loginDTO);
             Map<String,String> response = new HashMap<>();
             response.put("token",token);
 
