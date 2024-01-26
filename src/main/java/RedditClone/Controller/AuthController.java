@@ -81,4 +81,40 @@ public class AuthController {
             return ResponseEntity.status(401).body("Invalid username or password.");
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String authHeader){
+        String token = extractToken(authHeader);
+
+        if(token != null){
+            jwtService.addTokenBlackList(token);
+            return ResponseEntity.ok("Logout Successful");
+        }else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Authorization header");
+        }
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<String> refreshToken(@RequestHeader("Authorization")String authHeader){
+        String token = extractToken(authHeader);
+
+        if(token != null){
+            if (jwtService.isTokenBlackList(token)){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
+            }
+            String username = jwtService.extractUsername(token);
+            String newToken = jwtService.generateToken(username);
+
+            return ResponseEntity.ok(newToken);
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Authorization header");
+        }
+    }
+
+    private String extractToken(String authHeader){
+        if(authHeader != null && authHeader.startsWith("Bearer ")){
+            return authHeader.substring(7);
+        }
+        return null;
+    }
 }
