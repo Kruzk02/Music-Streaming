@@ -27,16 +27,21 @@ public class Post {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subReddit_id",referencedColumnName = "id")
+    private SubReddit subReddit;
+
     public Post() {
     }
 
-    public Post(Long id, String title, String content, Collection<Comment> comments, User user, Date createAt) {
+    public Post(Long id, String title, String content, Collection<Comment> comments, User user, Date createAt,SubReddit subReddit) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.comments = comments;
         this.user = user;
         this.createAt = createAt;
+        this.subReddit = subReddit;
     }
 
     public Long getId() {
@@ -85,5 +90,13 @@ public class Post {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public SubReddit getSubReddit() {
+        return subReddit;
+    }
+
+    public void setSubReddit(SubReddit subReddit) {
+        this.subReddit = subReddit;
     }
 }

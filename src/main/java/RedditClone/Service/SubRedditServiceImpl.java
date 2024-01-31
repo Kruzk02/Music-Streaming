@@ -22,7 +22,7 @@ public class SubRedditServiceImpl implements SubRedditService{
         SubReddit subReddit = new SubReddit();
         subReddit.setName(subRedditDTO.getName());
         subReddit.setPosts(subRedditDTO.getPosts());
-        subReddit.setDescription(subReddit.getDescription());
+        subReddit.setDescription(subRedditDTO.getDescription());
         subReddit.setUser(subRedditDTO.getUser());
         subReddit.setCreateAt(new Date(System.currentTimeMillis()));
         return subRedditRepository.save(subReddit);

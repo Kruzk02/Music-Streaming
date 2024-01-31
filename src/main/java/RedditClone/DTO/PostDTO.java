@@ -12,15 +12,17 @@ public class PostDTO {
     private String content;
     private Collection<Comment> comments;
     private User user;
+    private String subReddit;
 
     public PostDTO() {
     }
 
-    public PostDTO(String title, String content, Collection<Comment> comments, User user) {
+    public PostDTO(String title, String content, Collection<Comment> comments, User user,String subReddit) {
         this.title = title;
         this.content = content;
         this.comments = comments;
         this.user = user;
+        this.subReddit = subReddit;
     }
 
     public String getTitle() {
@@ -53,5 +55,13 @@ public class PostDTO {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getSubReddit() {
+        return subReddit;
+    }
+
+    public void setSubReddit(String subReddit) {
+        this.subReddit = subReddit;
     }
 }
