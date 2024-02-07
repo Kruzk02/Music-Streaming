@@ -6,6 +6,7 @@ import RedditClone.Jwt.JwtService;
 import RedditClone.Model.User;
 import RedditClone.Repository.RoleRepository;
 import RedditClone.Repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,21 +25,21 @@ public class UserServiceImpl implements UserService{
     private final RoleRepository roleRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, AuthenticationManager authenticationManager, JwtService jwtService) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, AuthenticationManager authenticationManager, JwtService jwtService, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public User save(SignupDTO signupDTO) {
-        User user = new User();
-        user.setUsername(signupDTO.getUsername());
-        user.setEmail(signupDTO.getEmail());
+        User user = modelMapper.map(signupDTO,User.class);
         user.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         user.setEnabled(false);

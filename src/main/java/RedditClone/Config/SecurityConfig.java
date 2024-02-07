@@ -2,6 +2,9 @@ package RedditClone.Config;
 
 import RedditClone.Jwt.JwtAuthFilter;
 import RedditClone.Service.CustomUserDetailsService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -72,7 +75,13 @@ public class SecurityConfig {
 
         return webSecurityExpressionHandler;
     }
-
+    
+    @Bean
+    public ModelMapper modelMapper(){
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+        return modelMapper;
+    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http

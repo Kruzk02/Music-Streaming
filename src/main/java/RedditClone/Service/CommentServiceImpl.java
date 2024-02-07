@@ -3,6 +3,7 @@ package RedditClone.Service;
 import RedditClone.DTO.CommentDTO;
 import RedditClone.Model.Comment;
 import RedditClone.Repository.CommentRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,18 +13,17 @@ import java.util.Date;
 public class CommentServiceImpl implements CommentService{
 
     private final CommentRepository commentRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, ModelMapper modelMapper) {
         this.commentRepository = commentRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public Comment save(CommentDTO commentDTO) {
-        Comment comment = new Comment();
-        comment.setContent(commentDTO.getContent());
-        comment.setPosts(commentDTO.getPosts());
-        comment.setUser(commentDTO.getUser());
+        Comment comment = modelMapper.map(commentDTO,Comment.class);
         comment.setCreateAt(new Date(System.currentTimeMillis()));
 
         return commentRepository.save(comment);

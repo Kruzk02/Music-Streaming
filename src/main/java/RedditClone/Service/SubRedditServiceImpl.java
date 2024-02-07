@@ -3,6 +3,8 @@ package RedditClone.Service;
 import RedditClone.DTO.SubRedditDTO;
 import RedditClone.Model.SubReddit;
 import RedditClone.Repository.SubRedditRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -12,19 +14,19 @@ import java.util.List;
 public class SubRedditServiceImpl implements SubRedditService{
 
     private final SubRedditRepository subRedditRepository;
+    private final ModelMapper modelMapper;
 
-    public SubRedditServiceImpl(SubRedditRepository subRedditRepository) {
+    @Autowired
+    public SubRedditServiceImpl(SubRedditRepository subRedditRepository, ModelMapper modelMapper) {
         this.subRedditRepository = subRedditRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public SubReddit save(SubRedditDTO subRedditDTO) {
-        SubReddit subReddit = new SubReddit();
-        subReddit.setName(subRedditDTO.getName());
-        subReddit.setPosts(subRedditDTO.getPosts());
-        subReddit.setDescription(subRedditDTO.getDescription());
-        subReddit.setUser(subRedditDTO.getUser());
+        SubReddit subReddit = modelMapper.map(subRedditDTO,SubReddit.class);
         subReddit.setCreateAt(new Date(System.currentTimeMillis()));
+
         return subRedditRepository.save(subReddit);
     }
 
