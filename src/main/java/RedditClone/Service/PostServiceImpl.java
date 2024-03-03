@@ -7,12 +7,15 @@ import RedditClone.Repository.PostRepository;
 import RedditClone.Repository.SubRedditRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
 @Service
+@EnableCaching
 public class PostServiceImpl implements PostService{
 
     private final PostRepository postRepository;
@@ -60,12 +63,24 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
+    @Cacheable("post")
     public Post findPostById(Long id) {
+        doLongRunningTask();
         return postRepository.findById(id).orElse(null);
     }
 
     @Override
+    @Cacheable("posts")
     public List<Post> getAllPost() {
+        doLongRunningTask();
         return postRepository.findAll();
+    }
+
+    private void doLongRunningTask() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
